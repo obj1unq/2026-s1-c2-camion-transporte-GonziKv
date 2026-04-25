@@ -1,5 +1,6 @@
 import camion.*
 import cosas.*
+import modosDeBumblebee.*
 
 describe "cargar y descargar camion"{
     test "Cargar bumblebee y knight rider"{
@@ -170,5 +171,80 @@ describe "cargar y descargar camion"{
         camion.cargar(paqueteLadrillos)
         paqueteLadrillos.cantidad(300)
         assert.equals([800, 600], camion.pesoDeLasCosas())
+    }
+    test "Saber pesos de camion vacio"{
+        assert.equals([], camion.pesoDeLasCosas())
+    }
+    test "Cantidad de bultos de 9"{
+        //arrange
+        contenedorPortuario.agregarCosa(knightRider)
+        contenedorPortuario.agregarCosa(bumblebee)
+        embalajeSeguridad.cosa(residuosRadiactivos)
+        camion.cargar(contenedorPortuario)
+        camion.cargar(embalajeSeguridad)
+        camion.cargar(arenaAGranel)
+        camion.cargar(paqueteLadrillos)
+        paqueteLadrillos.cantidad(50)
+        camion.cargar(bateriaAA)
+        //assert
+        assert.equals(9, camion.cantBultosTransportados())
+    }
+    test "cantidad de bultos de 5"{
+        //arrange
+        camion.cargar(contenedorPortuario)
+        camion.cargar(paqueteLadrillos)
+        paqueteLadrillos.cantidad(150)
+        camion.cargar(bateriaAA)
+        bateriaAA.tieneMisiles(true)
+        //assert
+        assert.equals(5, camion.cantBultosTransportados())
+    }
+    test "cantidad de bultos de 4"{ 
+        camion.cargar(paqueteLadrillos)
+        paqueteLadrillos.cantidad(350)
+        camion.cargar(arenaAGranel)
+        assert.equals(4, camion.cantBultosTransportados())
+    }
+    test "Camion sufre accidente"{
+        //arrange
+        camion.cargar(contenedorPortuario)
+        contenedorPortuario.agregarCosa(knightRider)
+        contenedorPortuario.agregarCosa(bumblebee)
+        bumblebee.modo(auto)
+        camion.cargar(embalajeSeguridad)
+        embalajeSeguridad.cosa(residuosRadiactivos)
+        residuosRadiactivos.peso(30)
+        camion.cargar(arenaAGranel)
+        arenaAGranel.peso(50)
+        camion.cargar(paqueteLadrillos)
+        paqueteLadrillos.cantidad(100)
+        camion.cargar(bateriaAA)
+        bateriaAA.tieneMisiles(true)
+        //act
+        camion.accidentarse()
+        //assert
+        assert.equals(robot, bumblebee.modo())
+        assert.equals(30, residuosRadiactivos.peso())
+        assert.equals(70, arenaAGranel.peso())
+        assert.equals(88, paqueteLadrillos.cantidad())
+        assert.notThat(bateriaAA.tieneMisiles())
+    }
+    test "El camion sufre otro accidente"{
+        //arrange
+        camion.cargar(bumblebee)
+        bumblebee.modo(robot)
+        camion.cargar(residuosRadiactivos)
+        residuosRadiactivos.peso(30)
+        camion.cargar(paqueteLadrillos)
+        paqueteLadrillos.cantidad(10)
+        camion.cargar(bateriaAA)
+        bateriaAA.tieneMisiles(false)
+        //act
+        camion.accidentarse()
+        //assert
+        assert.equals(auto, bumblebee.modo())
+        assert.equals(45, residuosRadiactivos.peso())
+        assert.equals(0, paqueteLadrillos.cantidad())
+        assert.notThat(bateriaAA.tieneMisiles())
     }
 }

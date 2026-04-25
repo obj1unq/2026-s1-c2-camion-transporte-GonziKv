@@ -1,3 +1,4 @@
+import modosDeBumblebee.*
 object knightRider {
 	method peso(){
 		return 500 
@@ -5,7 +6,11 @@ object knightRider {
 	method nivelPeligrosidad(){
 		return 10 
 		}
-	
+	method bultos(){
+		return 1
+	}
+	method sufrirAccidente(){
+	}
 }
 object arenaAGranel{
 	var peso = 0
@@ -18,6 +23,12 @@ object arenaAGranel{
 	method nivelPeligrosidad(){
 		return 1
 	}
+	method bultos(){
+		return 1
+	}
+	method sufrirAccidente(){
+		peso = peso + 20
+	}
 }
 object bumblebee{
 	var modo = null
@@ -27,24 +38,27 @@ object bumblebee{
 	method peso(){
 		return 800
 	}
+	method modo(){
+		return modo
+	}
 	method nivelPeligrosidad(){
 		return modo.nivelPeligro()
 	}
-}
-object auto{
-	method nivelPeligro(){
-		return 15
+	method bultos(){
+		return 2
+	}
+	method sufrirAccidente(){
+		modo = modo.transformarse()
 	}
 }
-object robot{
-	method nivelPeligro(){
-		return 30
-	}
-}
+
 object paqueteLadrillos{
 	var cantidad = 0
 	method cantidad(_cantidad){
 		cantidad = _cantidad
+	}
+	method cantidad(){
+		return cantidad
 	}
 	method peso(){
 		return 2 * cantidad
@@ -52,11 +66,33 @@ object paqueteLadrillos{
 	method nivelPeligrosidad(){
 		return 2
 	}
+	method bultos(){
+		if (cantidad <= 100){
+			return 1
+		}
+		else if (cantidad <= 300){
+			return 2
+		}
+		else{
+			return 3
+		}
+		
+	}
+	method sufrirAccidente(){
+		if (cantidad <= 12){
+			cantidad = 0
+		} else {
+			cantidad = cantidad - 12
+		}
+	}
 }
 object bateriaAA{
 	var tieneMisiles = false
 	method tieneMisiles(_tieneMisiles){
 		tieneMisiles = _tieneMisiles
+	}
+	method tieneMisiles(){
+		return tieneMisiles
 	}
 	method peso(){
 		if (tieneMisiles) {
@@ -72,6 +108,16 @@ object bateriaAA{
 			return 0
 		}
 	}
+	method bultos(){
+		if (tieneMisiles){
+			return 2
+		} else {
+			return 1
+		} 
+	}
+	method sufrirAccidente(){
+		tieneMisiles = false
+	}
 }
 object residuosRadiactivos{
 	var peso = 0
@@ -83,6 +129,12 @@ object residuosRadiactivos{
 	}
 	method nivelPeligrosidad(){
 		return 200
+	}
+	method bultos(){
+		return 1
+	}
+	method sufrirAccidente(){
+		peso = peso + 15
 	}
 }
 object contenedorPortuario{
@@ -103,6 +155,12 @@ object contenedorPortuario{
 	method cosaMasPeligrosa(){
 		return cosas.max({cosa => cosa.nivelPeligrosidad()})
 	}
+	method bultos(){
+		return 1 + cosas.sum({cosa => cosa.bultos()})
+	}
+	method sufrirAccidente(){
+		cosas.forEach({cosa => cosa.sufrirAccidente()})
+	}
 }
 object embalajeSeguridad{  
 	var cosa = null
@@ -114,5 +172,10 @@ object embalajeSeguridad{
 	}
 	method nivelPeligrosidad(){
 		return cosa.nivelPeligrosidad() * 0.5
+	}
+	method bultos(){
+		return 2
+	}
+	method sufrirAccidente(){
 	}
 }

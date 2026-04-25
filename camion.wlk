@@ -64,4 +64,10 @@ object camion {
 	method pesoDeLasCosas(){
 		return cosas.map({cosa => cosa.peso()})
 	}
+	method cantBultosTransportados(){
+		return cosas.sum({cosa => cosa.bultos()})
+	}
+	method accidentarse(){
+		cosas.forEach({cosa => cosa.sufrirAccidente()})
+	}
 }
