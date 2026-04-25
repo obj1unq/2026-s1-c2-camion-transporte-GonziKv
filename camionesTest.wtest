@@ -89,4 +89,22 @@ describe "cargar y descargar camion"{
         assert.equals(#{}, camion.cosasPeligrosasSuperiorA(200))
         assert.equals(#{}, camion.cosasMasPeligrosasQue(residuosRadiactivos))
     }
+    test "Puede circular en ruta"{
+        //arrange
+        camion.cargar(bumblebee)
+        bumblebee.modo(auto)
+        camion.cargar(paqueteLadrillos)
+        paqueteLadrillos.cantidad(300)
+        //assert
+        assert.that(camion.puedeCircularEnRuta(20))
+    }
+    test "no puede circular en ruta"{
+        //arrange
+        camion.cargar(bumblebee)
+        bumblebee.modo(auto)
+        camion.cargar(paqueteLadrillos)
+        paqueteLadrillos.cantidad(400)
+        //assert
+        assert.notThat(camion.puedeCircularEnRuta(20))
+    }
 }
