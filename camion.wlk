@@ -38,6 +38,11 @@ object camion {
 		} else{
 			self.error("no hay cosa con el nivel de peligrosidad dado")
 		}
-		
+	}
+	method cosasPeligrosasSuperiorA(nivel){
+		return cosas.filter({cosa => cosa.nivelPeligrosidad() > nivel})
+	}
+	method cosasMasPeligrosasQue(cosaAComparar){
+		return cosas.filter({cosa => cosa.nivelPeligrosidad() > cosaAComparar.nivelPeligrosidad()})
 	}
 }

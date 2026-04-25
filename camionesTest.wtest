@@ -75,4 +75,18 @@ describe "cargar y descargar camion"{
         bateriaAA.tieneMisiles(true)
         assert.equals(bateriaAA, camion.cosaPeligrosaDeNivel(100))
     }
+    test"Comparar cosas peligrosas que bumblebee y un paquete de ladrillos"{
+        //arrange
+        camion.cargar(knightRider)
+        camion.cargar(bateriaAA)
+        bumblebee.modo(auto)
+        bateriaAA.tieneMisiles(true)
+        //assert
+        assert.equals(#{bateriaAA}, camion.cosasPeligrosasSuperiorA(15))
+        assert.equals(#{bateriaAA}, camion.cosasMasPeligrosasQue(bumblebee))
+        assert.equals(#{bateriaAA, knightRider}, camion.cosasPeligrosasSuperiorA(2))
+        assert.equals(#{bateriaAA, knightRider}, camion.cosasMasPeligrosasQue(paqueteLadrillos))
+        assert.equals(#{}, camion.cosasPeligrosasSuperiorA(200))
+        assert.equals(#{}, camion.cosasMasPeligrosasQue(residuosRadiactivos))
+    }
 }
