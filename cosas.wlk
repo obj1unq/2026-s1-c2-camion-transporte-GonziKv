@@ -20,15 +20,15 @@ object arenaAGranel{
 	}
 }
 object bumblebee{
-	var estado = auto
-	method estado(_estado){
-		estado = _estado
+	var modo = null
+	method modo(_modo){
+		modo = _modo
 	}
 	method peso(){
 		return 800
 	}
 	method nivelPeligrosidad(){
-		return estado.nivelPeligro()
+		return modo.nivelPeligro()
 	}
 }
 object auto{

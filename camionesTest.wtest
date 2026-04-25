@@ -1,0 +1,78 @@
+import camion.*
+import cosas.*
+
+describe "cargar y descargar camion"{
+    test "Cargar bumblebee y knight rider"{
+        //arrange
+        camion.cargar(bumblebee)
+        //assert
+        assert.that((camion.cosas()).contains(bumblebee))
+        //act
+        camion.cargar(knightRider)
+        //assert
+        assert.equals(#{bumblebee, knightRider}, camion.cosas())
+        //act
+        camion.descargar(bumblebee)
+        //asert
+        assert.equals(#{knightRider}, camion.cosas())
+        assert.throwsException({camion.cargar(knightRider)})
+        assert.throwsException({camion.descargar(bumblebee)})
+    }
+    test "Comprobar si el peso del camion es par"{
+        //arrange
+        camion.cargar(arenaAGranel)
+        arenaAGranel.peso(50)
+        camion.cargar(bumblebee)
+        //assert
+        assert.that(camion.esPesoPar())
+        //act
+        arenaAGranel.peso(51)
+        //assert
+        assert.notThat(camion.esPesoPar())
+    }
+    test "Comprobar si el camion tiene una cosa de peso dado"{
+        //arrange
+        camion.cargar(bumblebee)
+        camion.cargar(arenaAGranel)
+        arenaAGranel.peso(50)
+        //assert
+        assert.that(camion.tieneCosaConPeso(50))
+        assert.that(camion.tieneCosaConPeso(800))
+        assert.notThat(camion.tieneCosaConPeso(500))
+    }
+    test "El camion tiene un peso excedido"{
+        //arrange
+        camion.cargar(bumblebee)
+        camion.cargar(paqueteLadrillos)
+        paqueteLadrillos.cantidad(400)
+        //assert
+        assert.equals(2600, camion.peso())
+        assert.that(camion.excesoDePeso())
+    }
+    test "El camion tiene un peso no excedido"{
+        //arrange
+        camion.cargar(bumblebee)
+        camion.cargar(paqueteLadrillos)
+        paqueteLadrillos.cantidad(300)
+        //assert
+        assert.equals(2400, camion.peso())
+        assert.notThat(camion.excesoDePeso())
+    }
+    test "Camion con cosas de nivel peligrosidad dados"{
+        //arrange
+        camion.cargar(bumblebee)
+        bumblebee.modo(auto)
+        camion.cargar(bateriaAA)
+        bateriaAA.tieneMisiles(false)
+        camion.cargar(residuosRadiactivos)
+        //assert
+        assert.equals(bateriaAA, camion.cosaPeligrosaDeNivel(0))
+        assert.equals(bumblebee, camion.cosaPeligrosaDeNivel(15))
+        assert.equals(residuosRadiactivos, camion.cosaPeligrosaDeNivel(200))
+        assert.throwsException({camion.cosaPeligrosaDeNivel(30)})
+        bumblebee.modo(robot)
+        assert.equals(bumblebee, camion.cosaPeligrosaDeNivel(30))
+        bateriaAA.tieneMisiles(true)
+        assert.equals(bateriaAA, camion.cosaPeligrosaDeNivel(100))
+    }
+}
