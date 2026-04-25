@@ -85,3 +85,34 @@ object residuosRadiactivos{
 		return 200
 	}
 }
+object contenedorPortuario{
+	const cosas = []
+	method agregarCosa(unaCosa){
+		cosas.add(unaCosa)
+	}
+	method peso(){
+		return 100 + cosas.sum({cosa => cosa.peso()})
+	}
+	method nivelPeligrosidad(){
+		if (cosas.isEmpty()){
+			return 0
+		} else {
+			return (self.cosaMasPeligrosa()).nivelPeligrosidad()
+		}
+	}
+	method cosaMasPeligrosa(){
+		return cosas.max({cosa => cosa.nivelPeligrosidad()})
+	}
+}
+object embalajeSeguridad{  
+	var cosa = null
+	method cosa(_cosa){
+		cosa = _cosa
+	}
+	method peso(){
+		return cosa.peso()
+	}
+	method nivelPeligrosidad(){
+		return cosa.nivelPeligrosidad() * 0.5
+	}
+}

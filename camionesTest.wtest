@@ -107,4 +107,34 @@ describe "cargar y descargar camion"{
         //assert
         assert.notThat(camion.puedeCircularEnRuta(20))
     }
+    test "no puede circular en ruta 2"{
+        //arrange
+        camion.cargar(bumblebee)
+        bumblebee.modo(robot)
+        camion.cargar(paqueteLadrillos)
+        paqueteLadrillos.cantidad(300)
+        //assert
+        assert.notThat(camion.puedeCircularEnRuta(20))
+    }
+    test "Contenedor portuario prueba"{
+        //assert
+        assert.equals(100, contenedorPortuario.peso())
+        assert.equals(0, contenedorPortuario.nivelPeligrosidad())
+        //arrange
+        contenedorPortuario.agregarCosa(knightRider)
+        contenedorPortuario.agregarCosa(arenaAGranel)
+        arenaAGranel.peso(50)
+        //assert
+        assert.equals(650, contenedorPortuario.peso())
+        assert.equals(10, contenedorPortuario.nivelPeligrosidad())
+    }
+    test"Prueba de embalaje de seguridad"{
+        embalajeSeguridad.cosa(knightRider)
+        assert.equals(500, embalajeSeguridad.peso())
+        assert.equals(5, embalajeSeguridad.nivelPeligrosidad())
+        embalajeSeguridad.cosa(bumblebee)
+        bumblebee.modo(auto)
+        assert.equals(800, embalajeSeguridad.peso())
+        assert.equals(7.5, embalajeSeguridad.nivelPeligrosidad())
+    }
 }
