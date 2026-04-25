@@ -70,4 +70,9 @@ object camion {
 	method accidentarse(){
 		cosas.forEach({cosa => cosa.sufrirAccidente()})
 	}
+	method transportar(destino, camino){
+		camino.verificarViaje(self)
+		destino.almacenar(cosas)
+		cosas.removeAll(cosas)
+	}
 }
