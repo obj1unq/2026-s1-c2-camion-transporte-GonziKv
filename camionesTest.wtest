@@ -70,9 +70,13 @@ describe "cargar y descargar camion"{
         assert.equals(bumblebee, camion.cosaPeligrosaDeNivel(15))
         assert.equals(residuosRadiactivos, camion.cosaPeligrosaDeNivel(200))
         assert.throwsException({camion.cosaPeligrosaDeNivel(30)})
+        //act
         bumblebee.modo(robot)
+        //assert
         assert.equals(bumblebee, camion.cosaPeligrosaDeNivel(30))
+        //act
         bateriaAA.tieneMisiles(true)
+        //assert
         assert.equals(bateriaAA, camion.cosaPeligrosaDeNivel(100))
     }
     test"Comparar cosas peligrosas que bumblebee y un paquete de ladrillos"{
@@ -129,12 +133,42 @@ describe "cargar y descargar camion"{
         assert.equals(10, contenedorPortuario.nivelPeligrosidad())
     }
     test"Prueba de embalaje de seguridad"{
+        //arrange
         embalajeSeguridad.cosa(knightRider)
+        //assert
         assert.equals(500, embalajeSeguridad.peso())
         assert.equals(5, embalajeSeguridad.nivelPeligrosidad())
+        //arrange
         embalajeSeguridad.cosa(bumblebee)
         bumblebee.modo(auto)
+        //assert
         assert.equals(800, embalajeSeguridad.peso())
         assert.equals(7.5, embalajeSeguridad.nivelPeligrosidad())
+    }
+    test "El camion tiene algo que pensa entre 2 valores"{
+        //arrange
+        camion.cargar(bumblebee)
+        camion.cargar(paqueteLadrillos)
+        paqueteLadrillos.cantidad(300)
+        //assert
+        assert.that(camion.cosaEntre(5, 700))
+        assert.that(camion.cosaEntre(5, 1000))
+        assert.notThat(camion.cosaEntre(900, 1000))
+    }
+    test "Bumblebee es mas pesado"{
+        //arrange
+        camion.cargar(bumblebee)
+        camion.cargar(paqueteLadrillos)
+        paqueteLadrillos.cantidad(300)
+        assert.equals(bumblebee, camion.cosaMasPesada())
+    }
+    test "No hay cosa mas pesada a evaluar"{
+        assert.throwsException({camion.cosaMasPesada()})
+    }
+    test "Saber pesos del camion"{
+        camion.cargar(bumblebee)
+        camion.cargar(paqueteLadrillos)
+        paqueteLadrillos.cantidad(300)
+        assert.equals([800, 600], camion.pesoDeLasCosas())
     }
 }

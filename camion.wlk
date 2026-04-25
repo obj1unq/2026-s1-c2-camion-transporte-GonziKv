@@ -51,4 +51,17 @@ object camion {
 	method puedeCircularEnRuta(nivel){
 		return (not(self.excesoDePeso()) && not(self.hayCosaMasPeligrosa(nivel)))
 	}
+	method cosaEntre(min, max){
+		return (cosas.any({cosa => cosa.peso() > min}) && cosas.any({cosa => cosa.peso() < max}))
+	}
+	method cosaMasPesada(){
+		if (cosas.isEmpty()){
+			self.error("No hay cosa para calcular")
+		} else{
+			return cosas.max({cosa => cosa.peso()})
+		}
+	}
+	method pesoDeLasCosas(){
+		return cosas.map({cosa => cosa.peso()})
+	}
 }
